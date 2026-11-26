@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Profil pribadi Fahrur, siswa SMK Bangun Nusa Bangsa dengan minat dan kemampuan di bidang jaringan komputer, administrasi server, Linux, dan keamanan siber etis."
+  />
+  <title>Fahrur — Jaringan Komputer, Server &amp; Keamanan Siber Etis</title>
+
+  <style>
+    /* ==========================================================================
+       1. PENGATURAN WARNA & TEMA (Mudah Diedit)
+       ========================================================================== */
+    :root {
+      --bg-base: #070b12;
+      --bg-surface: #0d1420;
+      --bg-card: #111b2b;
+      --bg-card-hover: #162338;
+      --border-subtle: rgba(148, 163, 184, 0.16);
+      --border-accent: rgba(16, 185, 129, 0.42);
+
+      --text-primary: #f1f5f9;   /* Kontras sangat tinggi di latar gelap */
+      --text-secondary: #cbd5e1; /* Mudah dibaca untuk paragraf */
+      --text-muted: #94a3b8;     /* Label & keterangan sekunder */
+
+      --accent-green: #10b981;
+      --accent-green-bright: #34d399;
+      --accent-blue: #38bdf8;
+      --accent-blue-deep: #0284c7;
+
+      --gradient-accent: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+      --shadow-card: 0 18px 40px -18px rgba(0, 0, 0, 0.75);
+      --shadow-glow: 0 0 32px rgba(16, 185, 129, 0.18);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --max-width: 1120px;
+      --header-height: 70px;
+
+      --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      --font-mono: "JetBrains Mono", "Cascadia Code", "Fira Code", Consolas, monospace;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE STYLES
+       ========================================================================== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + 18px);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.65;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent-blue);
+      outline-offset: 3px;
+    }
+
+    /* Latar belakang grid jaringan halus */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.10), transparent 38%),
+        radial-gradient(circle at 85% 25%, rgba(56, 189, 248, 0.10), transparent 42%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    }
+
+    #network-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--max-width));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 4.5rem 0;
+    }
+
+    .section-header {
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+    }
+
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-green-bright);
+      margin-bottom: 0.65rem;
+    }
+
+    .section-eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: var(--gradient-accent);
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 0.65rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* ==========================================================================
+       3. NAVBAR
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: var(--header-height);
+      background: rgba(7, 11, 18, 0.82);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(16, 185, 129, 0.14);
+      border: 1px solid var(--border-accent);
+      color: var(--accent-green-bright);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--text-primary);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .nav-links a.active {
+      color: var(--accent-green-bright);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ==========================================================================
+       4. HERO SECTION
+       ========================================================================== */
+    .hero {
+      padding: 4rem 0 3.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.11);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: var(--accent-green-bright);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green-bright);
+      box-shadow: 0 0 10px var(--accent-green-bright);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.45; transform: scale(0.85); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.25rem, 5vw, 3.45rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title .accent-text {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent-blue);
+      margin-bottom: 1.15rem;
+      min-height: 1.65em;
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 58ch;
+      margin-bottom: 1.85rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.82rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.96rem;
+      border: 1px solid transparent;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: #03110c;
+      box-shadow: 0 10px 25px -8px rgba(16, 185, 129, 0.45);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 14px 30px -8px rgba(56, 189, 248, 0.5);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card);
+    }
+
+    /* Kartu ringkas terminal di bawah CTA Hero */
+    .mini-terminal {
+      background: rgba(13, 20, 32, 0.92);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      max-width: 540px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.95rem;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .terminal-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #334155;
+    }
+
+    .terminal-dots span:first-child { background: #ef4444; }
+    .terminal-dots span:nth-child(2) { background: #f59e0b; }
+    .terminal-dots span:nth-child(3) { background: #10b981; }
+
+    .terminal-body {
+      padding: 0.95rem 1.1rem;
+      font-family: var(--font-mono);
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .terminal-prompt {
+      color: var(--accent-green-bright);
+    }
+
+    .terminal-key {
+      color: var(--accent-blue);
+    }
+
+    /* Bingkai Foto Profil */
+    .profile-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+      max-width: 390px;
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .profile-photo-wrap {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      border-radius: calc(var(--radius-lg) - 6px);
+      overflow: hidden;
+      background: #0b1320;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 22%;
+      transition: transform 0.45s ease;
+    }
+
+    .profile-card:hover .profile-photo {
+      transform: scale(1.02);
+    }
+
+    .profile-photo-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 2.5rem 1rem 0.9rem;
+      background: linear-gradient(to top, rgba(7, 11, 18, 0.92), transparent);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+
+    .node-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(13, 20, 32, 0.88);
+      border: 1px solid var(--border-accent);
+      color: var(--accent-green-bright);
+    }
+
+    .profile-meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.95rem;
+    }
+
+    .meta-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.65rem 0.8rem;
+    }
+
+    .meta-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       5. TENTANG SAYA
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.75rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .about-text p + p {
+      margin-top: 1rem;
+    }
+
+    .about-text p {
+      color: var(--text-secondary);
+    }
+
+    .ethics-box {
+      margin-top: 1.4rem;
+      padding: 1rem 1.15rem;
+      border-radius: var(--radius-sm);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+    }
+
+    .ethics-box svg {
+      flex-shrink: 0;
+      color: var(--accent-green-bright);
+      margin-top: 2px;
+    }
+
+    .ethics-box strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .ethics-box p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    .topology-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topology-title {
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      color: var(--accent-blue);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .focus-list {
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .focus-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.8rem 0.95rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .focus-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--accent-blue);
+      flex-shrink: 0;
+    }
+
+    .focus-item h3 {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 0.15rem;
+    }
+
+    .focus-item p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       6. KEAHLIAN
+       ========================================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.35rem;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.55rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      box-shadow: var(--shadow-card);
+    }
+
+    .skill-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-accent);
+      background: var(--bg-card-hover);
+    }
+
+    .skill-head {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--accent-green-bright);
+      flex-shrink: 0;
+    }
+
+    .skill-icon.blue {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.3);
+      color: var(--accent-blue);
+    }
+
+    .skill-head h3 {
+      font-size: 1.12rem;
+      color: var(--text-primary);
+    }
+
+    .skill-head span {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .skill-desc {
+      color: var(--text-secondary);
+      font-size: 0.94rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0.32rem 0.65rem;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    /* ==========================================================================
+       7. PROYEK (CONTOH YANG DAPAT DIGANTI)
+       ========================================================================== */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .filter-btn {
+      padding: 0.48rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: var(--accent-green);
+      color: var(--accent-green-bright);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.35rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.45rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1.1rem;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(56, 189, 248, 0.45);
+    }
+
+    .project-card.hidden {
+      display: none;
+    }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .project-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-blue);
+    }
+
+    .template-note {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .project-card h3 {
+      font-size: 1.08rem;
+      color: var(--text-primary);
+      margin-bottom: 0.55rem;
+    }
+
+    .project-card p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    .project-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--accent-green-bright);
+    }
+
+    .project-link:hover {
+      text-decoration: underline;
+    }
+
+    .editable-banner {
+      margin-top: 1.5rem;
+      padding: 0.9rem 1.1rem;
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      background: rgba(13, 20, 32, 0.7);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .editable-banner code {
+      font-family: var(--font-mono);
+      color: var(--accent-blue);
+    }
+
+    /* ==========================================================================
+       8. KONTAK
+       ========================================================================== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1.25rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.95rem 1.1rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .contact-item:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card-hover);
+    }
+
+    .contact-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      min-width: 0;
+    }
+
+    .contact-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--accent-green-bright);
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      display: block;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+
+    .contact-value {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+
+    .copy-btn {
+      padding: 0.42rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--accent-green);
+      color: var(--accent-green-bright);
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.78rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 0.94rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+    }
+
+    .form-feedback {
+      font-size: 0.88rem;
+      color: var(--accent-green-bright);
+      min-height: 1.3em;
+    }
+
+    /* ==========================================================================
+       9. FOOTER
+       ========================================================================== */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 2rem 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .footer-note {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Animasi kemunculan halus */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       10. RESPONSIF (TABLET & PONSEL)
+       ========================================================================== */
+    @media (max-width: 960px) {
+      .hero-grid,
+      .about-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .profile-card {
+        max-width: 340px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .section {
+        padding: 3.5rem 0;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.85rem 1rem 1.15rem;
+        background: rgba(7, 11, 18, 0.97);
+        border-bottom: 1px solid var(--border-subtle);
+        display: none;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .skills-grid,
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-tag {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .status-dot { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <canvas id="network-canvas" aria-hidden="true"></canvas>
+
+  <!-- ======================================================================
+       HEADER & NAVIGASI
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="#beranda" class="brand" aria-label="Beranda Fahrur">
+        <span class="brand-mark" aria-hidden="true">&gt;_</span>
+        <span>Fahrur</span>
+        <span class="brand-tag">// SMK Bangun Nusa Bangsa</span>
+      </a>
+
+      <button
+        type="button"
+        class="menu-toggle"
+        id="menu-toggle"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+        aria-label="Buka menu navigasi"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <nav aria-label="Navigasi utama">
+        <ul class="nav-links" id="nav-menu">
+          <li><a href="#beranda" class="active">Beranda</a></li>
+          <li><a href="#tentang">Tentang Saya</a></li>
+          <li><a href="#keahlian">Keahlian</a></li>
+          <li><a href="#proyek">Proyek</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ====================================================================
+         1. BAGIAN UTAMA (HERO)
+         ==================================================================== -->
+    <section id="beranda" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <div class="status-pill">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>Siswa SMK Bangun Nusa Bangsa • NetSec Enthusiast</span>
+          </div>
+
+          <h1 class="hero-title">
+            Halo, saya <span class="accent-text">Fahrur</span>.
+          </h1>
+
+          <p class="hero-role" id="typing-role" aria-live="polite">
+            Jaringan Komputer • Administrasi Server • Keamanan Siber Etis
+          </p>
+
+          <p class="hero-desc">
+            Saya adalah siswa <strong>SMK Bangun Nusa Bangsa</strong> yang memiliki minat dan
+            kemampuan di bidang jaringan komputer, pengelolaan server berbasis Linux, serta
+            pembelajaran <em>ethical hacking</em> dan pengujian keamanan berizin untuk membangun
+            sistem yang andal dan aman.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#kontak" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              Hubungi Saya
+            </a>
+            <a href="#proyek" class="btn btn-secondary">
+              Lihat Contoh Proyek
+            </a>
+          </div>
+
+          <div class="mini-terminal" aria-label="Ringkasan identitas teknis">
+            <div class="terminal-bar">
+              <div class="terminal-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+              <span>fahrur@bnb-lab: ~</span>
+            </div>
+            <div class="terminal-body">
+              <div><span class="terminal-prompt">$</span> whoami --profile</div>
+              <div><span class="terminal-key">nama:</span> Fahrur | <span class="terminal-key">sekolah:</span> SMK Bangun Nusa Bangsa</div>
+              <div><span class="terminal-key">fokus:</span> Networking, Linux Server, Ethical Hacking (Legal &amp; Berizin)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOTO PROFIL: Ganti file foto-fahrur.jpg di folder yang sama untuk mengubah foto -->
+        <div class="hero-visual">
+          <div class="profile-card">
+            <div class="profile-photo-wrap">
+              <img
+                src="foto-fahrur.jpg"
+                alt="Foto profil Fahrur, siswa SMK Bangun Nusa Bangsa"
+                class="profile-photo"
+                loading="eager"
+              />
+              <div class="profile-photo-overlay">
+                <span class="node-badge">
+                  <span class="status-dot" aria-hidden="true"></span>
+                  Node: FAHRUR-01
+                </span>
+                <span style="color: var(--text-secondary);">Lab Mode</span>
+              </div>
+            </div>
+
+            <div class="profile-meta">
+              <div class="meta-box">
+                <span class="meta-label">Institusi</span>
+                <span class="meta-value">SMK Bangun Nusa Bangsa</span>
+              </div>
+              <div class="meta-box">
+                <span class="meta-label">Minat Utama</span>
+                <span class="meta-value">Network &amp; Ethical Sec</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         2. TENTANG SAYA
+         ==================================================================== -->
+    <section id="tentang" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Tentang Saya</span>
+          <h2 class="section-title">Antusias Mengelola Infrastruktur &amp; Menjaga Keamanan Sistem</h2>
+          <p class="section-subtitle">
+            Perpaduan antara ketertarikan pada konektivitas jaringan, keandalan server, dan
+            kesadaran keamanan siber yang bertanggung jawab.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <article class="panel about-text reveal">
+            <p>
+              Saya <strong>Fahrur</strong>, siswa di <strong>SMK Bangun Nusa Bangsa</strong> yang
+              aktif mempelajari cara kerja jaringan komputer, administrasi server, serta sistem
+              operasi Linux. Bagi saya, memahami bagaimana data berpindah dari satu perangkat ke
+              perangkat lain dan bagaimana layanan server tetap berjalan stabil adalah hal yang
+              sangat menarik untuk dieksplorasi.
+            </p>
+            <p>
+              Selain membangun dan mengonfigurasi jaringan maupun server, saya juga mendalami bidang
+              <strong>keamanan siber etis (<em>ethical hacking</em>)</strong>. Saya belajar
+              bagaimana celah keamanan dapat ditemukan dan diperbaiki melalui simulasi laboratorium
+              lokal, latihan Capture The Flag (CTF) edukatif, serta pengujian keamanan berizin agar
+              sistem lebih siap menghadapi risiko siber.
+            </p>
+
+            <div class="ethics-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                <polyline points="9 12 11 14 15 10"></polyline>
+              </svg>
+              <div>
+                <strong>Komitmen Keamanan Siber Bertanggung Jawab</strong>
+                <p>
+                  Seluruh pembelajaran keamanan siber dan pengujian kerentanan dilakukan hanya pada
+                  lingkungan lab pribadi atau sistem dengan izin tertulis yang sah—berpegang pada
+                  etika, hukum, dan tujuan perlindungan sistem.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel topology-card reveal" aria-label="Pilar pembelajaran Fahrur">
+            <div class="topology-title">
+              <span>TOPOLOGI FOKUS BELAJAR</span>
+              <span>[ACTIVE]</span>
+            </div>
+
+            <!-- Visual SVG Topologi Jaringan / Server -->
+            <svg viewBox="0 0 360 120" width="100%" height="120" role="img" aria-label="Ilustrasi topologi jaringan antara router, server, dan firewall">
+              <line x1="65" y1="60" x2="180" y2="60" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5 4" />
+              <line x1="180" y1="60" x2="295" y2="60" stroke="#10b981" stroke-width="2" stroke-dasharray="5 4" />
+
+              <rect x="20" y="34" width="90" height="52" rx="10" fill="#0d1420" stroke="#38bdf8" stroke-width="1.5" />
+              <text x="65" y="57" text-anchor="middle" fill="#f1f5f9" font-size="11" font-family="monospace">ROUTER</text>
+              <text x="65" y="73" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">VLAN / Routing</text>
+
+              <rect x="135" y="30" width="90" height="60" rx="10" fill="#0d1420" stroke="#10b981" stroke-width="1.8" />
+              <text x="180" y="56" text-anchor="middle" fill="#34d399" font-size="11" font-family="monospace">FIREWALL</text>
+              <text x="180" y="73" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">Audit &amp; Hardening</text>
+
+              <rect x="250" y="34" width="90" height="52" rx="10" fill="#0d1420" stroke="#38bdf8" stroke-width="1.5" />
+              <text x="295" y="57" text-anchor="middle" fill="#f1f5f9" font-size="11" font-family="monospace">LINUX SERVER</text>
+              <text x="295" y="73" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">SSH / Web / DNS</text>
+            </svg>
+
+            <ul class="focus-list">
+              <li class="focus-item">
+                <div class="focus-icon" aria-hidden="true">01</div>
+                <div>
+                  <h3>Perancangan &amp; Troubleshooting Jaringan</h3>
+                  <p>Mengatur IP addressing, routing dasar, serta menganalisis konektivitas.</p>
+                </div>
+              </li>
+              <li class="focus-item">
+                <div class="focus-icon" aria-hidden="true">02</div>
+                <div>
+                  <h3>Layanan Server Berbasis Linux</h3>
+                  <p>Membangun layanan web, DNS, dan akses jarak jauh yang terstruktur.</p>
+                </div>
+              </li>
+              <li class="focus-item">
+                <div class="focus-icon" aria-hidden="true">03</div>
+                <div>
+                  <h3>Pengujian Keamanan Berizin</h3>
+                  <p>Memahami celah umum aplikasi/jaringan dan menerapkan langkah mitigasi.</p>
+                </div>
+              </li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         3. KEAHLIAN
+         ==================================================================== -->
+    <section id="keahlian" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Keahlian</span>
+          <h2 class="section-title">Bidang Kemampuan Utama</h2>
+          <p class="section-subtitle">
+            Kompetensi teknis yang terus saya latih melalui praktik sekolah, eksperimen lab
+            virtual, dan dokumentasi teknis.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Keahlian 1: Jaringan Komputer -->
+          <article class="skill-card reveal">
+            <div class="skill-head">
+              <div class="skill-icon blue" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="6" height="6" rx="1"></rect>
+                  <rect x="16" y="2" width="6" height="6" rx="1"></rect>
+                  <rect x="9" y="16" width="6" height="6" rx="1"></rect>
+                  <path d="M5 8v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"></path>
+                  <path d="M12 13v3"></path>
+                </svg>
+              </div>
+              <div>
+                <h3>Jaringan Komputer</h3>
+                <span>Network Infrastructure</span>
+              </div>
+            </div>
+            <p class="skill-desc">
+              Memahami dasar arsitektur jaringan lokal (LAN), pengalamatan IP, segmentasi VLAN,
+              routing statis maupun dinamis dasar, serta troubleshooting koneksi antarperangkat.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">TCP/IP &amp; Subnetting</li>
+              <li class="tag">VLAN &amp; Switching</li>
+              <li class="tag">Routing Dasar</li>
+              <li class="tag">DNS &amp; DHCP</li>
+              <li class="tag">Analisis Paket</li>
+            </ul>
+          </article>
+
+          <!-- Keahlian 2: Administrasi Server -->
+          <article class="skill-card reveal">
+            <div class="skill-head">
+              <div class="skill-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="7" rx="2"></rect>
+                  <rect x="2" y="14" width="20" height="7" rx="2"></rect>
+                  <line x1="6" y1="6.5" x2="6.01" y2="6.5"></line>
+                  <line x1="6" y1="17.5" x2="6.01" y2="17.5"></line>
+                </svg>
+              </div>
+              <div>
+                <h3>Administrasi Server</h3>
+                <span>Server Deployment &amp; Maintenance</span>
+              </div>
+            </div>
+            <p class="skill-desc">
+              Mampu melakukan instalasi, konfigurasi layanan server, pengelolaan hak akses pengguna,
+              pemantauan status layanan, serta penerapan konfigurasi dasar yang aman dan teratur.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Web Server (Nginx/Apache)</li>
+              <li class="tag">SSH Hardening</li>
+              <li class="tag">Virtualisasi Lab</li>
+              <li class="tag">Manajemen Layanan</li>
+              <li class="tag">Backup Dasar</li>
+            </ul>
+          </article>
+
+          <!-- Keahlian 3: Linux -->
+          <article class="skill-card reveal">
+            <div class="skill-head">
+              <div class="skill-icon blue" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4 17 10 11 4 5"></polyline>
+                  <line x1="12" y1="19" x2="20" y2="19"></line>
+                </svg>
+              </div>
+              <div>
+                <h3>Linux</h3>
+                <span>Command Line &amp; System Ops</span>
+              </div>
+            </div>
+            <p class="skill-desc">
+              Terbiasa bekerja di lingkungan terminal Linux untuk navigasi sistem berkas,
+              pengaturan izin file (<em>permissions</em>), manajemen paket, pembacaan log sistem, dan
+              skrip otomatisasi sederhana.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Ubuntu / Debian</li>
+              <li class="tag">Bash Scripting Dasar</li>
+              <li class="tag">File Permissions</li>
+              <li class="tag">Systemd &amp; Logs</li>
+              <li class="tag">Firewall (UFW/iptables)</li>
+            </ul>
+          </article>
+
+          <!-- Keahlian 4: Keamanan Siber Etis -->
+          <article class="skill-card reveal">
+            <div class="skill-head">
+              <div class="skill-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <path d="M9 12l2 2 4-4"></path>
+                </svg>
+              </div>
+              <div>
+                <h3>Keamanan Siber Etis</h3>
+                <span>Ethical Hacking &amp; Defense</span>
+              </div>
+            </div>
+            <p class="skill-desc">
+              Mempelajari teknik identifikasi celah keamanan secara legal pada lingkungan lab
+              terisolasi atau pengujian keamanan berizin, lengkap dengan pemahaman cara mitigasi dan
+              penguatan konfigurasi sistem.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Pengujian Berizin</li>
+              <li class="tag">Audit Port &amp; Layanan</li>
+              <li class="tag">OWASP Dasar</li>
+              <li class="tag">Lab Simulasi &amp; CTF</li>
+              <li class="tag">Server Hardening</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         4. PROYEK (CONTOH YANG DAPAT DIGANTI)
+         ==================================================================== -->
+    <section id="proyek" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Proyek</span>
+          <h2 class="section-title">Contoh Proyek &amp; Lab Pembelajaran</h2>
+          <p class="section-subtitle">
+            Daftar di bawah merupakan <strong>contoh proyek yang dapat diganti</strong> sesuai
+            proyek nyata yang sudah atau sedang dikerjakan oleh Fahrur.
+          </p>
+        </div>
+
+        <div class="filter-bar reveal" role="group" aria-label="Filter kategori proyek">
+          <button type="button" class="filter-btn active" data-filter="all">Semua</button>
+          <button type="button" class="filter-btn" data-filter="jaringan">Jaringan</button>
+          <button type="button" class="filter-btn" data-filter="server">Server &amp; Linux</button>
+          <button type="button" class="filter-btn" data-filter="keamanan">Keamanan Etis</button>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Contoh Proyek 1 -->
+          <article class="project-card reveal" data-category="jaringan">
+            <div>
+              <div class="project-top">
+                <span class="project-badge">Jaringan</span>
+                <span class="template-note">Contoh • Dapat Diganti</span>
+              </div>
+              <h3>Simulasi Segmentasi Jaringan Lab Sekolah</h3>
+              <p>
+                Contoh proyek perancangan topologi jaringan menggunakan pembagian VLAN dan subnet
+                untuk memisahkan lalu lintas ruang praktik, server lokal, dan akses tamu secara rapi.
+              </p>
+            </div>
+            <div class="project-footer">
+              <ul class="tag-list">
+                <li class="tag">VLAN</li>
+                <li class="tag">Subnetting</li>
+                <li class="tag">Routing</li>
+              </ul>
+              <a href="#kontak" class="project-link">Diskusikan / Ganti Detail Proyek &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Contoh Proyek 2 -->
+          <article class="project-card reveal" data-category="server">
+            <div>
+              <div class="project-top">
+                <span class="project-badge">Server &amp; Linux</span>
+                <span class="template-note">Contoh • Dapat Diganti</span>
+              </div>
+              <h3>Setup Web Server Linux &amp; Penguatan Akses SSH</h3>
+              <p>
+                Contoh proyek pemasangan web server di lingkungan virtual Linux, konfigurasi
+                firewall UFW, pembatasan akses SSH berbasis kunci, serta pemantauan log aktivitas.
+              </p>
+            </div>
+            <div class="project-footer">
+              <ul class="tag-list">
+                <li class="tag">Linux</li>
+                <li class="tag">Nginx</li>
+                <li class="tag">UFW &amp; SSH</li>
+              </ul>
+              <a href="#kontak" class="project-link">Diskusikan / Ganti Detail Proyek &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Contoh Proyek 3 -->
+          <article class="project-card reveal" data-category="keamanan">
+            <div>
+              <div class="project-top">
+                <span class="project-badge">Keamanan Etis</span>
+                <span class="template-note">Contoh • Dapat Diganti</span>
+              </div>
+              <h3>Lab Pengujian Keamanan Berizin &amp; Checklist Hardening</h3>
+              <p>
+                Contoh proyek pembelajaran keamanan siber etis pada mesin lab lokal untuk memeriksa
+                layanan terbuka, mengevaluasi konfigurasi lemah, dan menyusun langkah perbaikan.
+              </p>
+            </div>
+            <div class="project-footer">
+              <ul class="tag-list">
+                <li class="tag">Ethical Hacking</li>
+                <li class="tag">Lab Terisolasi</li>
+                <li class="tag">Hardening</li>
+              </ul>
+              <a href="#kontak" class="project-link">Diskusikan / Ganti Detail Proyek &rarr;</a>
+            </div>
+          </article>
+        </div>
+
+        <div class="editable-banner reveal">
+          Catatan pengeditan: Untuk mengganti isi proyek, ubah langsung kartu di dalam bagian
+          <code>&lt;section id="proyek"&gt;</code> pada file <code>index.html</code> ini (judul,
+          deskripsi, tag teknologi, dan tautan repositori).
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         5. KONTAK
+         ==================================================================== -->
+    <section id="kontak" class="section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-eyebrow">Kontak</span>
+          <h2 class="section-title">Hubungi Saya</h2>
+          <p class="section-subtitle">
+            Terbuka untuk diskusi seputar jaringan komputer, server Linux, pembelajaran keamanan
+            siber etis, atau kolaborasi proyek sekolah. Tautan di bawah menggunakan placeholder yang
+            siap diganti.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="panel reveal">
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.45rem;">Kanal Kontak (Placeholder)</h3>
+            <p style="color: var(--text-secondary); font-size: 0.94rem;">
+              Ganti alamat email dan tautan media sosial berikut dengan akun milik Fahrur sendiri.
+            </p>
+
+            <div class="contact-list">
+              <div class="contact-item">
+                <a href="mailto:fahrur.contoh@email.com" class="contact-item-left">
+                  <div class="contact-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="contact-label">Email</span>
+                    <span class="contact-value" id="email-text">fahrur.contoh@email.com</span>
+                  </div>
+                </a>
+                <button type="button" class="copy-btn" id="copy-email-btn">Salin</button>
+              </div>
+
+              <a href="https://github.com/username-fahrur" target="_blank" rel="noopener noreferrer" class="contact-item">
+                <div class="contact-item-left">
+                  <div class="contact-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="contact-label">GitHub (Placeholder)</span>
+                    <span class="contact-value">github.com/username-fahrur</span>
+                  </div>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">&nearr;</span>
+              </a>
+
+              <a href="https://linkedin.com/in/username-fahrur" target="_blank" rel="noopener noreferrer" class="contact-item">
+                <div class="contact-item-left">
+                  <div class="contact-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                      <rect x="2" y="9" width="4" height="12"></rect>
+                      <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="contact-label">LinkedIn (Placeholder)</span>
+                    <span class="contact-value">linkedin.com/in/username-fahrur</span>
+                  </div>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">&nearr;</span>
+              </a>
+
+              <a href="https://instagram.com/username.fahrur" target="_blank" rel="noopener noreferrer" class="contact-item">
+                <div class="contact-item-left">
+                  <div class="contact-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <span class="contact-label">Instagram (Placeholder)</span>
+                    <span class="contact-value">@username.fahrur</span>
+                  </div>
+                </div>
+                <span style="color: var(--text-muted); font-size: 0.85rem;">&nearr;</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="panel reveal">
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.45rem;">Kirim Pesan Cepat</h3>
+            <p style="color: var(--text-secondary); font-size: 0.94rem; margin-bottom: 1.15rem;">
+              Formulir ini menyiapkan draf email langsung melalui aplikasi email di perangkat Anda
+              (tanpa memerlukan backend).
+            </p>
+
+            <form class="contact-form" id="contact-form">
+              <div class="form-group">
+                <label for="sender-name">Nama Anda</label>
+                <input type="text" id="sender-name" name="name" placeholder="Contoh: Budi" required />
+              </div>
+
+              <div class="form-group">
+                <label for="sender-topic">Topik</label>
+                <input
+                  type="text"
+                  id="sender-topic"
+                  name="topic"
+                  placeholder="Diskusi Jaringan / Server / Pembelajaran Keamanan Siber"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="sender-message">Pesan</label>
+                <textarea
+                  id="sender-message"
+                  name="message"
+                  rows="4"
+                  placeholder="Tulis pesan Anda di sini..."
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Siapkan Pesan Email
+              </button>
+              <p class="form-feedback" id="form-feedback" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> Fahrur • Siswa SMK Bangun Nusa Bangsa</p>
+      <p class="footer-note">Etika • Legalitas • Keamanan Siber Bertanggung Jawab</p>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       JAVASCRIPT (VANILLA JS — TANPA FRAMEWORK)
+       ====================================================================== -->
+  <script>
+    (function () {
+      "use strict";
+
+      // 1. Tahun otomatis di footer
+      const yearEl = document.getElementById("year");
+      if (yearEl) {
+        yearEl.textContent = String(new Date().getFullYear());
+      }
+
+      // 2. Menu navigasi responsif (mobile)
+      const menuToggle = document.getElementById("menu-toggle");
+      const navMenu = document.getElementById("nav-menu");
+      const navLinks = document.querySelectorAll(".nav-links a");
+
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener("click", () => {
+          const isOpen = navMenu.classList.toggle("open");
+          menuToggle.setAttribute("aria-expanded", String(isOpen));
+        });
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            navMenu.classList.remove("open");
+            menuToggle.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      // 3. Penanda menu aktif sesuai posisi gulir (scroll spy)
+      const sections = document.querySelectorAll("main section[id]");
+      const updateActiveNav = () => {
+        const scrollPos = window.scrollY + 130;
+        sections.forEach((sec) => {
+          const top = sec.offsetTop;
+          const height = sec.offsetHeight;
+          const id = sec.getAttribute("id");
+          const matchingLink = document.querySelector(`.nav-links a[href="#${id}"]`);
+          if (matchingLink) {
+            if (scrollPos >= top && scrollPos < top + height) {
+              navLinks.forEach((l) => l.classList.remove("active"));
+              matchingLink.classList.add("active");
+            }
+          }
+        });
+      };
+      window.addEventListener("scroll", updateActiveNav, { passive: true });
+
+      // 4. Filter kategori proyek
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const projectCards = document.querySelectorAll(".project-card");
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const category = btn.dataset.filter;
+          filterButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          projectCards.forEach((card) => {
+            const match = category === "all" || card.dataset.category === category;
+            card.classList.toggle("hidden", !match);
+          });
+        });
+      });
+
+      // 5. Tombol salin email placeholder
+      const copyBtn = document.getElementById("copy-email-btn");
+      const emailText = document.getElementById("email-text");
+      if (copyBtn && emailText) {
+        copyBtn.addEventListener("click", async () => {
+          const email = emailText.textContent.trim();
+          try {
+            await navigator.clipboard.writeText(email);
+            copyBtn.textContent = "Tersalin!";
+          } catch {
+            copyBtn.textContent = "Siap";
+          }
+          setTimeout(() => {
+            copyBtn.textContent = "Salin";
+          }, 2000);
+        });
+      }
+
+      // 6. Formulir pesan cepat berbasis mailto (ganti email tujuan sesuai email Fahrur)
+      const contactForm = document.getElementById("contact-form");
+      const formFeedback = document.getElementById("form-feedback");
+      if (contactForm && formFeedback) {
+        contactForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const name = document.getElementById("sender-name").value.trim();
+          const topic = document.getElementById("sender-topic").value.trim();
+          const message = document.getElementById("sender-message").value.trim();
+          const targetEmail = emailText ? emailText.textContent.trim() : "fahrur.contoh@email.com";
+
+          const subject = encodeURIComponent(`[Profil Fahrur] ${topic}`);
+          const body = encodeURIComponent(`Halo Fahrur,\n\nNama: ${name}\n\n${message}`);
+          window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+          formFeedback.textContent = "Draf pesan disiapkan. Periksa aplikasi email Anda.";
+        });
+      }
+
+      // 7. Animasi kemunculan elemen saat di-scroll
+      const revealEls = document.querySelectorAll(".reveal");
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        revealEls.forEach((el) => observer.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("visible"));
+      }
+
+      // 8. Latar belakang node jaringan interaktif ringan (menghormati prefers-reduced-motion)
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const canvas = document.getElementById("network-canvas");
+      if (canvas && !prefersReducedMotion) {
+        const ctx = canvas.getContext("2d");
+        let nodes = [];
+        let animationFrameId = null;
+
+        const resizeCanvas = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          const count = Math.min(34, Math.max(14, Math.floor(window.innerWidth / 48)));
+          nodes = Array.from({ length: count }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.6 + 1.2
+          }));
+        };
+
+        const draw = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          for (let i = 0; i < nodes.length; i++) {
+            const a = nodes[i];
+            a.x += a.vx;
+            a.y += a.vy;
+
+            if (a.x < 0 || a.x > canvas.width) a.vx *= -1;
+            if (a.y < 0 || a.y > canvas.height) a.vy *= -1;
+
+            for (let j = i + 1; j < nodes.length; j++) {
+              const b = nodes[j];
+              const dx = a.x - b.x;
+              const dy = a.y - b.y;
+              const dist = Math.hypot(dx, dy);
+
+              if (dist < 150) {
+                const alpha = (1 - dist / 150) * 0.22;
+                ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+
+            ctx.fillStyle = "rgba(16, 185, 129, 0.55)";
+            ctx.beginPath();
+            ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          animationFrameId = window.requestAnimationFrame(draw);
+        };
+
+        resizeCanvas();
+        draw();
+        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("beforeunload", () => {
+          if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
